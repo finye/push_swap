@@ -14,7 +14,7 @@ all: $(NAME)
 		$(CC) -c $(CFLAGS) $?
 
 $(NAME): $(OBJECTS) $(LIBFT)
-		$(CC) $(OBJECTS) $(LIBFT) -o $(NAME)
+		$(CC) -g $(OBJECTS) $(LIBFT) -o $(NAME)
 
 $(LIBFT):
 		make -C libft

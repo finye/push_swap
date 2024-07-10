@@ -6,40 +6,36 @@
 /*   By: fsolomon <fsolomon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 17:03:15 by fsolomon          #+#    #+#             */
-/*   Updated: 2024/07/09 21:51:36 by fsolomon         ###   ########.fr       */
+/*   Updated: 2024/07/10 23:47:41 by fsolomon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 #include<string.h>
+#include <limits.h>
 
-int	ft_atoi(const char *str)
+int check_duplicate(_stack *stack_a)
 {
-	int			sign;
-	long int	number;
-	long int	check;
+    int i;
+    int j;
+    i = 0;
 
-	sign = 1;
-	number = 0;
-	while ((*str >= 9 && *str <= 13) || *str == 32)
-		str++;
-	if (*str == '+' || *str == '-')
-	{
-		if (*str == '-')
-			sign *= -1;
-		str++;
-	}
-	while (*str >= 48 && *str <= 57)
-	{
-		check = number;
-		number = number * 10 + (*str - 48);
-		if (number / 10 != check && sign > 0)
-			return (-1);
-		if (number / 10 != check && sign < 0)
-			return (0);
-		str++;
-	}
-	return (sign * number);
+    if(!stack_a || !stack_a->size)
+        return (-1);
+    if (stack_a->size == 1)
+        return (1);
+    while (i < stack_a->size)
+    {
+        j = i + 1;
+        while( j < stack_a->size)
+        {
+            if (stack_a->arr[i] == stack_a->arr[j])
+                return (-1);
+            j++;
+        }
+        i++;
+    }
+    return (1);
 }
 //Swap the first 2 elements at the top of a stack.
 //Do nothing if there is only one or no elements.
@@ -135,6 +131,12 @@ void rrr(_stack *stack_a, _stack *stack_b)
     rev_rotate(stack_a);
     rev_rotate(stack_b);
 }
+void free_stack(_stack *stack)
+{
+    if(stack->arr)
+        free(stack->arr);
+    free(stack);
+}
 void create_stack_a(char *str)
 {
     char **input;
@@ -174,9 +176,23 @@ void create_stack_a(char *str)
     while (input[i])
     {
         //printf("%s\n", input[i++]);
-        stack_a->arr[i] = ft_atoi(input[i]);
-        i++;
+        if (atol(input[i]) > INT_MAX || atol(input[i]) < INT_MIN )
+            {
+                free(stack_a);
+                free(stack_b);
+                return ;
+            }
+            stack_a->arr[i] = ft_atoi(input[i]);
+            i++;
     }
+    //checking doubles
+    printf("%d = return from check_duplicate \n",check_duplicate(stack_a));
+    if (check_duplicate(stack_a) == -1)
+        {
+            free_stack(stack_a);
+            free(stack_b);
+            return ;
+        }
     int j = 0;
     while(size--)
     {

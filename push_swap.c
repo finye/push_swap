@@ -6,7 +6,7 @@
 /*   By: fsolomon <fsolomon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 17:03:15 by fsolomon          #+#    #+#             */
-/*   Updated: 2024/07/10 23:47:41 by fsolomon         ###   ########.fr       */
+/*   Updated: 2024/07/11 17:45:27 by fsolomon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,28 @@ int check_duplicate(_stack *stack_a)
     }
     return (1);
 }
+void is_num(char *str)
+{
+    int i;
+
+    i = 0;
+    while(str[i])
+    {
+        if(i == 0 && str[i] == '-')
+        {
+            i++;
+        }
+        if (!(str[i] >= '0' && str[i] <= '9'))
+            {
+            write (1, "Error\n", 6);
+            exit(1);
+            }
+        i++;
+    }
+}
 //Swap the first 2 elements at the top of a stack.
 //Do nothing if there is only one or no elements.
-void swap (_stack *stack_a)
+void swap (_stack *stack_a, char c)
 {
     int temp;
 
@@ -48,11 +67,16 @@ void swap (_stack *stack_a)
     temp = stack_a->arr[0];
     stack_a->arr[0] = stack_a->arr[1];
     stack_a->arr[1] = temp;
+    if(c == 'a')
+        write(1, "sa\n", 3);
+    else if(c =='b')
+        write(1, "sb\n", 3);
 }
 void ss (_stack *stack_a, _stack *stack_b)
 {
-    swap(stack_a);
-    swap(stack_b);
+    swap(stack_a, 'a');
+    swap(stack_b, 'b');
+    write(1, "ss\n", 3);
 }
 //pa (push a): Take the first element at the top of b and put it at the top of a.
 //Do nothing if b is empty.
@@ -70,6 +94,7 @@ void push_a(_stack *stack_a, _stack *stack_b)
 
     stack_a->size++;
     stack_b->size--;
+    write(1, "pa\n", 3);
 }
 //pb (push b): Take the first element at the top of a and put it at the top of b.
 //Do nothing if a is empty
@@ -89,6 +114,7 @@ void push_b(_stack *stack_a, _stack *stack_b)
 
     stack_b->size++;
     stack_a->size--;
+    write(1, "pb\n", 3);
 }
 //ra (rotate a): Shift up all elements of stack a by 1.
 //The first element becomes the last one
@@ -151,11 +177,20 @@ void create_stack_a(char *str)
     stack_b = NULL;
     if (!str)
         return ;
+    /* while (str[i])
+    {
+        if(is_num(&str[i]) == -1)
+        {
+            write (1, "Error\n", 6);
+            exit(1);
+        }
+    } */
     input = ft_split(str, ' ');
     while (input[i])
     {
+        is_num(input[i++]);
         size++;
-        printf("%s\n", input[i++]);
+        //printf("%s\n", input[i++]);
     }
     printf("%d = The size \n\n", size);
     if(size)
@@ -198,8 +233,8 @@ void create_stack_a(char *str)
     {
         printf("%d th = %d stack_a __original \n", j, stack_a->arr[j]);
         j++;
-    }
-    printf("\n%d stack_a 0th __original\n", *(stack_a->arr));
+    } 
+    /* printf("\n%d stack_a 0th __original\n", *(stack_a->arr));
     printf("%d stack_a 1th __original\n", *(stack_a->arr + 1));
     printf("%d stack_a 2th __original\n", *(stack_a->arr + 2));
 
@@ -231,8 +266,11 @@ void create_stack_a(char *str)
 
     printf("\n%d stack_b 0th\n", *(stack_b->arr));
     printf("%d stack_b 1th\n", *(stack_b->arr + 1));
-    printf("%d stack_b  2th\n", *(stack_b->arr + 2));
-
+    printf("%d stack_b  2th\n", *(stack_b->arr + 2)); */
+    sort_me(stack_a);
+    printf("\n%d stack_b 0th\n", *(stack_a->arr));
+    printf("%d stack_b 1th\n", *(stack_a->arr + 1));
+    printf("%d stack_b  2th\n", *(stack_a->arr + 2));
 }
 
 int main(int argc, char **argv)

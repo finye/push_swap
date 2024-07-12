@@ -6,7 +6,7 @@
 /*   By: fsolomon <fsolomon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 17:01:32 by fsolomon          #+#    #+#             */
-/*   Updated: 2024/07/11 17:41:48 by fsolomon         ###   ########.fr       */
+/*   Updated: 2024/07/12 12:30:58 by fsolomon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ void rotate(_stack *stack_a);
 void rr (_stack *stack_a, _stack *stack_b);
 void rev_rotate(_stack *stack_a);
 void rrr(_stack *stack_a, _stack *stack_b);
-void sort_me(_stack *stack_a);
+void sort_me(_stack *stack_a, _stack *stack_b);
 void min_sort(_stack *stack_a);
+void sort_big(_stack *stack_a, _stack *stack_b);
 
 #endif

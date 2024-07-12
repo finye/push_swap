@@ -6,7 +6,7 @@
 /*   By: fsolomon <fsolomon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 17:03:15 by fsolomon          #+#    #+#             */
-/*   Updated: 2024/07/11 17:45:27 by fsolomon         ###   ########.fr       */
+/*   Updated: 2024/07/12 16:20:24 by fsolomon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,6 +213,7 @@ void create_stack_a(char *str)
         //printf("%s\n", input[i++]);
         if (atol(input[i]) > INT_MAX || atol(input[i]) < INT_MIN )
             {
+                write(1, "Error\n", 6);
                 free(stack_a);
                 free(stack_b);
                 return ;
@@ -224,6 +225,7 @@ void create_stack_a(char *str)
     printf("%d = return from check_duplicate \n",check_duplicate(stack_a));
     if (check_duplicate(stack_a) == -1)
         {
+            write(1, "Error\n", 6);
             free_stack(stack_a);
             free(stack_b);
             return ;
@@ -267,10 +269,14 @@ void create_stack_a(char *str)
     printf("\n%d stack_b 0th\n", *(stack_b->arr));
     printf("%d stack_b 1th\n", *(stack_b->arr + 1));
     printf("%d stack_b  2th\n", *(stack_b->arr + 2)); */
-    sort_me(stack_a);
-    printf("\n%d stack_b 0th\n", *(stack_a->arr));
-    printf("%d stack_b 1th\n", *(stack_a->arr + 1));
-    printf("%d stack_b  2th\n", *(stack_a->arr + 2));
+    sort_me(stack_a, stack_b);
+    printf("\n%d stack_a 0th\n", *(stack_a->arr));
+    printf("%d stack_a 1th\n", *(stack_a->arr + 1));
+    printf("%d stack_a  2th\n", *(stack_a->arr + 2));
+
+    printf("\n%d stack_b 0th\n", *(stack_b->arr));
+    printf("%d stack_b 1th\n", *(stack_b->arr + 1));
+    printf("%d stack_b  2th\n", *(stack_b->arr + 2));
 }
 
 int main(int argc, char **argv)

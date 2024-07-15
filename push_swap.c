@@ -6,7 +6,7 @@
 /*   By: fsolomon <fsolomon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 17:03:15 by fsolomon          #+#    #+#             */
-/*   Updated: 2024/07/12 16:20:24 by fsolomon         ###   ########.fr       */
+/*   Updated: 2024/07/15 17:41:19 by fsolomon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ void push_b(_stack *stack_a, _stack *stack_b)
 }
 //ra (rotate a): Shift up all elements of stack a by 1.
 //The first element becomes the last one
-void rotate(_stack *stack_a)
+void rotate(_stack *stack_a, char c)
 {
     int temp;
 
@@ -127,18 +127,22 @@ void rotate(_stack *stack_a)
     temp = stack_a->arr[0];
     ft_memmove(&stack_a->arr[0], &stack_a->arr[1], (stack_a->size -1) * sizeof(int));
     stack_a->arr[stack_a->size - 1] = temp;
-
+    if (c == 'a')
+        write(1, "ra\n", 3);
+    else if (c == 'b')
+        write(1, "rb\n", 3);
 }
 //rr : ra and rb at the same time.
 void rr (_stack *stack_a, _stack *stack_b)
 {
-    rotate(stack_a);
-    rotate(stack_b);
+    rotate(stack_a, 'a');
+    rotate(stack_b, 'b');
+    write(1, "rr\n", 3);
 }
 
 //rra (reverse rotate a): Shift down all elements of stack a by 1.
 //The last element becomes the first one.
-void rev_rotate(_stack *stack_a)
+void rev_rotate(_stack *stack_a, char c)
 {
     int temp;
 
@@ -148,14 +152,19 @@ void rev_rotate(_stack *stack_a)
     temp = stack_a->arr[stack_a->size -1];
     ft_memmove(&stack_a->arr[1], &stack_a->arr[0], sizeof(int) * (stack_a->size -1));
     stack_a->arr[0] = temp;
+    if (c == 'a')
+        write(1, "rra\n", 4);
+    else if (c == 'b')
+        write(1, "rrb\n", 4);
 
 }
 
 //rrr : rra and rrb at the same time.
 void rrr(_stack *stack_a, _stack *stack_b)
 {
-    rev_rotate(stack_a);
-    rev_rotate(stack_b);
+    rev_rotate(stack_a, 'a');
+    rev_rotate(stack_b, 'b');
+    write(1, "rrr\n", 4);
 }
 void free_stack(_stack *stack)
 {
@@ -192,7 +201,6 @@ void create_stack_a(char *str)
         size++;
         //printf("%s\n", input[i++]);
     }
-    printf("%d = The size \n\n", size);
     if(size)
     {
         stack_a = malloc(sizeof(_stack) * 1);
@@ -236,14 +244,7 @@ void create_stack_a(char *str)
         printf("%d th = %d stack_a __original \n", j, stack_a->arr[j]);
         j++;
     } 
-    /* printf("\n%d stack_a 0th __original\n", *(stack_a->arr));
-    printf("%d stack_a 1th __original\n", *(stack_a->arr + 1));
-    printf("%d stack_a 2th __original\n", *(stack_a->arr + 2));
-
-    printf("\n%d stack_b 0th __original\n", *(stack_b->arr));
-    printf("%d stack_b 1th __original\n", *(stack_b->arr + 1));
-    printf("%d stack_b 2th __original\n", *(stack_b->arr + 2));
-
+    /* 
     //swap (stack_a);
     //rev_rotate(stack_a);
     printf("\n%d =size_A %d =size_B ___0\n", stack_a->size, stack_b->size);
@@ -260,23 +261,21 @@ void create_stack_a(char *str)
     printf("%d =size_A %d =size_B __after push_a\n", stack_a->size, stack_b->size);
     push_a(stack_a, stack_b);
     printf("%d =size_A %d =size_B __after push_a\n", stack_a->size, stack_b->size);
-
-
-    printf("\n%d stack_a 0th \n", *(stack_a->arr));
-    printf("%d stack_a 1th\n", *(stack_a->arr + 1));
-    printf("%d stack_a 2th\n", *(stack_a->arr + 2));
-
-    printf("\n%d stack_b 0th\n", *(stack_b->arr));
-    printf("%d stack_b 1th\n", *(stack_b->arr + 1));
-    printf("%d stack_b  2th\n", *(stack_b->arr + 2)); */
+*/
     sort_me(stack_a, stack_b);
-    printf("\n%d stack_a 0th\n", *(stack_a->arr));
-    printf("%d stack_a 1th\n", *(stack_a->arr + 1));
-    printf("%d stack_a  2th\n", *(stack_a->arr + 2));
-
-    printf("\n%d stack_b 0th\n", *(stack_b->arr));
-    printf("%d stack_b 1th\n", *(stack_b->arr + 1));
-    printf("%d stack_b  2th\n", *(stack_b->arr + 2));
+    int m = 0;
+    while(m < stack_a->size)
+    {
+        printf("\n%d th = %d stack_a \n", m, stack_a->arr[m]);
+        m++;
+    } 
+    printf("------------");
+    int k = 0;
+    while(k < stack_b->size)
+    {
+        printf("\n%d th = %d stack_b \n", k, stack_b->arr[k]);
+        k++;
+    } 
 }
 
 int main(int argc, char **argv)

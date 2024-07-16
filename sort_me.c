@@ -6,7 +6,7 @@
 /*   By: fsolomon <fsolomon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 12:53:28 by fsolomon          #+#    #+#             */
-/*   Updated: 2024/07/16 12:24:50 by fsolomon         ###   ########.fr       */
+/*   Updated: 2024/07/16 22:20:18 by fsolomon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,9 @@ void min_sort(_stack *stack_a)
         rev_rotate(stack_a, 'a');
     if (stack_a->arr[0] > stack_a->arr[1])
         swap(stack_a, 'a');
+    printf("\n End of Min sorting \n");
 }
+
 int is_sorted(_stack *stack)
 {
     int i;
@@ -36,6 +38,7 @@ int is_sorted(_stack *stack)
     }
     return (1);
 }
+
 int find_biggest(_stack *stack_b)
 {
     int i;
@@ -43,8 +46,8 @@ int find_biggest(_stack *stack_b)
     int max_index;
 
     i = 0;
-    max = -1;
-    max_index = -1;
+    max = stack_b->arr[0];
+    max_index = 0;
     while (i < stack_b->size)
     {
         if (stack_b->arr[i] > max)
@@ -56,6 +59,7 @@ int find_biggest(_stack *stack_b)
     }
     return (max_index);
 }
+
 int check_target(_stack *stack_a, _stack *stack_b)
 {
     int i;
@@ -71,7 +75,7 @@ int check_target(_stack *stack_a, _stack *stack_b)
     {
         if(stack_b->arr[i] < stack_a->arr[0] && stack_b->arr[i] > closest_number)
         {
-           
+
             closest_number = stack_b->arr[i];
             target = i;
             printf("%d THE NUM TO PUSH \n", stack_a->arr[0]);
@@ -88,10 +92,11 @@ int check_target(_stack *stack_a, _stack *stack_b)
         printf("The biggest number = %d \n", stack_b->arr[biggest]);
         return(biggest);
     }
-    
+
     return (target);
 }
-void push_to_target(int index, _stack *stack_a, _stack *stack_b)
+
+void push_to_target_b(int index, _stack *stack_a, _stack *stack_b)
 {
     int median;
     int i;
@@ -131,18 +136,40 @@ void sort_big(_stack *stack_a, _stack *stack_b)
             {
                 push_b(stack_a, stack_b);
                 rotate(stack_b, 'b');
-            }      
+            }
         }
         else if (stack_b->size > 1)
         {
             //check_target(stack_a, stack_b);
             //printf("%d THE target index \n", check_target(stack_a, stack_b));
             index = check_target(stack_a, stack_b);
-            push_to_target(index, stack_a, stack_b);
+            push_to_target_b(index, stack_a, stack_b);
         }
     }
- }
-void find_target(_stack *stack_a, _stack *stack_b)
+}
+
+int    find_smallest(_stack *stack_a)
+{
+    int i;
+    int min;
+    int min_index;
+
+    i = 0;
+    min = stack_a->arr[0];
+    min_index = 0;
+    while (i < stack_a->size)
+    {
+        if(stack_a->arr[i] < min)
+        {
+            min = stack_a->arr[i];
+            min_index = i;
+        }
+        i++;
+    }
+    return (min_index);
+}
+
+int find_target_in_a(_stack *stack_a, _stack *stack_b)
 {
     int i;
     int closest_bigger;
@@ -153,15 +180,50 @@ void find_target(_stack *stack_a, _stack *stack_b)
     target_index = -1;
     while(i < stack_a->size)
     {
-        //if (stack_a->arr[i] > stack_b->arr[0] && )
+        if (stack_a->arr[i] > stack_b->arr[0] && stack_a->arr[i] < closest_bigger)
+        {
+            closest_bigger = stack_a->arr[i];
+            target_index = i;
+        }
         i++;
     }
+    if (target_index == -1)
+        {
+           target_index = find_smallest(stack_a);
+        }
+    return(target_index);
 }
+
+void    push_to_a(int index, _stack *stack_a, _stack *stack_b)
+{
+    int i;
+    int median;
+
+    median = stack_a->size / 2;
+    //i = 0;
+    if (index > median)
+    {
+        i = stack_a->size - index;
+        while (i--)
+            rev_rotate(stack_a, 'a');
+    }
+    else if (index <= median)
+    {
+        while (index--)
+            rotate (stack_a, 'a');
+    }
+    push_a(stack_a, stack_b);
+}
+
 void push_back_to_a(_stack *stack_a, _stack *stack_b)
 {
+    int index;
+
+    index = 0;
     while(stack_b->size)
     {
-        find_target(stack_a, stack_b);
+        index = find_target_in_a(stack_a, stack_b);
+        push_to_a(index, stack_a, stack_b);
     }
 }
 void sort_me(_stack *stack_a, _stack *stack_b)

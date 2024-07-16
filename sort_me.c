@@ -6,7 +6,7 @@
 /*   By: fsolomon <fsolomon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 12:53:28 by fsolomon          #+#    #+#             */
-/*   Updated: 2024/07/15 17:52:06 by fsolomon         ###   ########.fr       */
+/*   Updated: 2024/07/16 12:24:50 by fsolomon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,8 @@ int check_target(_stack *stack_a, _stack *stack_b)
     if(target == -1)
     {
         biggest = find_biggest(stack_b);
+        printf("THE biggest index = %d \n", biggest);
+        printf("The biggest number = %d \n", stack_b->arr[biggest]);
         return(biggest);
     }
     
@@ -92,12 +94,14 @@ int check_target(_stack *stack_a, _stack *stack_b)
 void push_to_target(int index, _stack *stack_a, _stack *stack_b)
 {
     int median;
+    int i;
 
+    i = stack_b->size - index;
     median = stack_b->size / 2;
     if (index > median)
     {
         //rev_rotate until our guy is on top
-        while(index--)
+        while(i--)
             rev_rotate(stack_b, 'b');
     }
     else if(index <= median)
@@ -138,7 +142,28 @@ void sort_big(_stack *stack_a, _stack *stack_b)
         }
     }
  }
+void find_target(_stack *stack_a, _stack *stack_b)
+{
+    int i;
+    int closest_bigger;
+    int target_index;
 
+    i = 0;
+    closest_bigger = INT_MAX;
+    target_index = -1;
+    while(i < stack_a->size)
+    {
+        //if (stack_a->arr[i] > stack_b->arr[0] && )
+        i++;
+    }
+}
+void push_back_to_a(_stack *stack_a, _stack *stack_b)
+{
+    while(stack_b->size)
+    {
+        find_target(stack_a, stack_b);
+    }
+}
 void sort_me(_stack *stack_a, _stack *stack_b)
 {
     printf("Is sorted? %d \n",is_sorted(stack_a));
@@ -152,4 +177,5 @@ void sort_me(_stack *stack_a, _stack *stack_b)
     {
          min_sort(stack_a);
     }
+    push_back_to_a(stack_a, stack_b);
 }

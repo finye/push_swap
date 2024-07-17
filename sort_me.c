@@ -6,7 +6,7 @@
 /*   By: fsolomon <fsolomon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 12:53:28 by fsolomon          #+#    #+#             */
-/*   Updated: 2024/07/16 22:20:18 by fsolomon         ###   ########.fr       */
+/*   Updated: 2024/07/17 15:58:39 by fsolomon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 void min_sort(_stack *stack_a)
 {
-    printf("\n Min sorting \n");
+    //printf("\n Min sorting \n");
     if (stack_a->arr[0] > stack_a->arr[1])
         swap(stack_a, 'a');
     if (stack_a->arr[1] > stack_a->arr[2])
         rev_rotate(stack_a, 'a');
     if (stack_a->arr[0] > stack_a->arr[1])
         swap(stack_a, 'a');
-    printf("\n End of Min sorting \n");
+    //printf("\n End of Min sorting \n");
 }
 
 int is_sorted(_stack *stack)
@@ -78,18 +78,18 @@ int check_target(_stack *stack_a, _stack *stack_b)
 
             closest_number = stack_b->arr[i];
             target = i;
-            printf("%d THE NUM TO PUSH \n", stack_a->arr[0]);
-            printf("\n NEW target = %d\n", stack_b->arr[i]);
+            //printf("%d THE NUM TO PUSH \n", stack_a->arr[0]);
+            //printf("\n NEW target = %d\n", stack_b->arr[i]);
         }
         i++;
     }
-    printf("THE target index = %d \n", target);
+    //printf("THE target index = %d \n", target);
     //To do later! find the biggest number in stack_b
     if(target == -1)
     {
         biggest = find_biggest(stack_b);
-        printf("THE biggest index = %d \n", biggest);
-        printf("The biggest number = %d \n", stack_b->arr[biggest]);
+        //printf("THE biggest index = %d \n", biggest);
+        //printf("The biggest number = %d \n", stack_b->arr[biggest]);
         return(biggest);
     }
 
@@ -123,8 +123,8 @@ void sort_big(_stack *stack_a, _stack *stack_b)
     index = 0;
     while(stack_a->size > 3)
     {
-         printf("size_STACK_A = %d \n", stack_a->size);
-         printf("size_STACK_B = %d \n", stack_b->size);
+         //printf("size_STACK_A = %d \n", stack_a->size);
+         //printf("size_STACK_B = %d \n", stack_b->size);
         //push_b(stack_a, stack_b);
         if (stack_b->size == 0)
             push_b(stack_a,stack_b);
@@ -226,9 +226,29 @@ void push_back_to_a(_stack *stack_a, _stack *stack_b)
         push_to_a(index, stack_a, stack_b);
     }
 }
+void final_sort_a(_stack *stack_a)
+{
+    int min_index;
+    int median;
+    int rev_rotate_step;
+
+    min_index = find_smallest(stack_a);
+    median = stack_a->size / 2;
+    if (min_index <= median)
+    {
+        while (min_index--)
+            rotate(stack_a, 'a');
+    }
+    else if (min_index > median)
+    {
+        rev_rotate_step = stack_a->size - min_index;
+        while (rev_rotate_step--)
+            rev_rotate(stack_a, 'a');
+    }
+}
 void sort_me(_stack *stack_a, _stack *stack_b)
 {
-    printf("Is sorted? %d \n",is_sorted(stack_a));
+    ///printf("Is sorted? %d \n",is_sorted(stack_a));
     if (is_sorted(stack_a) == 1)
         return ;
     if (stack_a->size > 3)
@@ -240,4 +260,5 @@ void sort_me(_stack *stack_a, _stack *stack_b)
          min_sort(stack_a);
     }
     push_back_to_a(stack_a, stack_b);
+    final_sort_a(stack_a);
 }

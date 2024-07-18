@@ -6,7 +6,7 @@
 /*   By: fsolomon <fsolomon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 17:01:32 by fsolomon          #+#    #+#             */
-/*   Updated: 2024/07/15 15:26:18 by fsolomon         ###   ########.fr       */
+/*   Updated: 2024/07/17 17:02:49 by fsolomon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ typedef struct _stack
     
 } _stack;
 
-void create_stack_a(char *str);
+//void create_stack_a(char *str);
+void create_stack_a(int argc,char **argv, _stack *stack_a, _stack *stack_b);
 void swap (_stack *stack_a, char c);
 void ss (_stack *stack_a, _stack *stack_b);
 void push_a(_stack *stack_a, _stack *stack_b);

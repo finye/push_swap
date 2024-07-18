@@ -6,12 +6,12 @@
 /*   By: fsolomon <fsolomon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 17:03:15 by fsolomon          #+#    #+#             */
-/*   Updated: 2024/07/15 17:41:19 by fsolomon         ###   ########.fr       */
+/*   Updated: 2024/07/17 17:47:29 by fsolomon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
-#include<string.h>
+#include <string.h>
 #include <limits.h>
 
 int check_duplicate(_stack *stack_a)
@@ -172,29 +172,36 @@ void free_stack(_stack *stack)
         free(stack->arr);
     free(stack);
 }
-void create_stack_a(char *str)
+int validate_input(int argc, char **argv)
+{
+    int i;
+
+    i = 0;
+    while(i < argc)
+    {
+        
+        i++;
+    }
+}
+void create_stack_a(int argc,char **argv, _stack *stack_a, _stack *stack_b)
 {
     char **input;
-    _stack *stack_a;
-    _stack *stack_b;
     int size;
     int i;
 
     size = 0;
     i = 0;
-    stack_a = NULL;
-    stack_b = NULL;
-    if (!str)
-        return ;
-    /* while (str[i])
+   
+   if (argc == 2)
+   {
+        if (!argv[1])
+            return ;
+    input = ft_split(argv[1], ' ');
+    }
+    else if (argc > 2)
     {
-        if(is_num(&str[i]) == -1)
-        {
-            write (1, "Error\n", 6);
-            exit(1);
-        }
-    } */
-    input = ft_split(str, ' ');
+        validate_input(argc, argv);
+    }
     while (input[i])
     {
         is_num(input[i++]);
@@ -230,7 +237,7 @@ void create_stack_a(char *str)
             i++;
     }
     //checking doubles
-    printf("%d = return from check_duplicate \n",check_duplicate(stack_a));
+    //printf("%d = return from check_duplicate \n",check_duplicate(stack_a));
     if (check_duplicate(stack_a) == -1)
         {
             write(1, "Error\n", 6);
@@ -241,49 +248,40 @@ void create_stack_a(char *str)
     int j = 0;
     while(size--)
     {
-        printf("%d th = %d stack_a __original \n", j, stack_a->arr[j]);
+        //printf("%d th = %d stack_a __original \n", j, stack_a->arr[j]);
         j++;
     } 
-    /* 
-    //swap (stack_a);
-    //rev_rotate(stack_a);
-    printf("\n%d =size_A %d =size_B ___0\n", stack_a->size, stack_b->size);
-    push_b(stack_a, stack_b);
-    printf("%d =size_A %d =size_B ___1\n", stack_a->size, stack_b->size);
-    push_b(stack_a, stack_b);
-    printf("%d =size_A %d =size_B ___2\n", stack_a->size, stack_b->size);
-    push_b(stack_a, stack_b);
-    printf("%d =size_A %d =size_B ___3\n", stack_a->size, stack_b->size);
-    push_b(stack_a, stack_b);
-    printf("%d =size_A %d =size_B ___4\n", stack_a->size, stack_b->size);
 
-    push_a(stack_a, stack_b);
-    printf("%d =size_A %d =size_B __after push_a\n", stack_a->size, stack_b->size);
-    push_a(stack_a, stack_b);
-    printf("%d =size_A %d =size_B __after push_a\n", stack_a->size, stack_b->size);
-*/
     sort_me(stack_a, stack_b);
     int m = 0;
     while(m < stack_a->size)
     {
-        printf("\n%d th = %d stack_a \n", m, stack_a->arr[m]);
+        //printf("\n%d th = %d stack_a \n", m, stack_a->arr[m]);
         m++;
     } 
-    printf("------------");
+    //printf("------------");
     int k = 0;
     while(k < stack_b->size)
     {
-        printf("\n%d th = %d stack_b \n", k, stack_b->arr[k]);
+        //printf("\n%d th = %d stack_b \n", k, stack_b->arr[k]);
         k++;
     } 
 }
 
 int main(int argc, char **argv)
 {
+    _stack *stack_a;
+    _stack *stack_b;
+
+    stack_a = NULL;
+    stack_b = NULL;
+    if (argc < 2)
+        return (1);
     if (argc == 2)
-    {
-        create_stack_a(argv[1]);
-    }
+        create_stack_a(argc, argv, stack_a, stack_b);
+   /*  if (argc > 2)
+        handle_input(argc, argv); */
+    
 }
 
 

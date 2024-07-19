@@ -6,7 +6,7 @@
 /*   By: fsolomon <fsolomon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 17:03:15 by fsolomon          #+#    #+#             */
-/*   Updated: 2024/07/17 17:47:29 by fsolomon         ###   ########.fr       */
+/*   Updated: 2024/07/19 17:29:45 by fsolomon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,18 +170,55 @@ void free_stack(_stack *stack)
 {
     if(stack->arr)
         free(stack->arr);
-    free(stack);
+    if (stack)
+        free(stack);
 }
-int validate_input(int argc, char **argv)
+void validate_input(int argc, char **argv)
 {
     int i;
 
-    i = 0;
+    i = 1;
     while(i < argc)
     {
-        
+        is_num(argv[i]);
+        if (atol(argv[i]) > INT_MAX || atol(argv[i]) < INT_MIN)
+            {
+                write(1, "Error\n", 6);
+                return ;
+            }
         i++;
     }
+}
+void parse_to_arr(int argc,char **argv, _stack *stack_a,_stack *stack_b)
+{
+    int i;
+    int j;
+
+    i = 1;
+    j = 0;
+    printf("argc %d" , argc);
+    if (argc > 2)
+    {
+        stack_a = malloc(sizeof(_stack) * 1);
+        stack_b = malloc(sizeof(_stack) * 1);
+    }
+    if (!stack_a || !stack_b)
+        return ;
+    stack_a->arr = malloc(sizeof(int) * (argc -1));
+    stack_b->arr = malloc(sizeof(int) * (argc -1));
+    if (!stack_a->arr || !stack_b->arr)
+        return ;
+    stack_a->size = argc -1;
+    stack_b->size = 0;
+    while (i < argc)
+    {
+         stack_a->arr[j++] = ft_atoi(argv[i++]);
+    }
+    int k = 4;
+    while(k--)
+    {
+        printf(" \n%d th = %d stack_a __original \n", k, stack_a->arr[k]);
+    } 
 }
 void create_stack_a(int argc,char **argv, _stack *stack_a, _stack *stack_b)
 {
@@ -192,16 +229,20 @@ void create_stack_a(int argc,char **argv, _stack *stack_a, _stack *stack_b)
     size = 0;
     i = 0;
    
-   if (argc == 2)
-   {
+    if (argc == 2)
+    {
         if (!argv[1])
             return ;
     input = ft_split(argv[1], ' ');
     }
-    else if (argc > 2)
+    if (argc > 2)
     {
         validate_input(argc, argv);
+        parse_to_arr(argc, argv, stack_a, stack_b);
     }
+    else if (argc == 2)
+    {
+
     while (input[i])
     {
         is_num(input[i++]);
@@ -236,16 +277,24 @@ void create_stack_a(int argc,char **argv, _stack *stack_a, _stack *stack_b)
             stack_a->arr[i] = ft_atoi(input[i]);
             i++;
     }
+    }
     //checking doubles
     //printf("%d = return from check_duplicate \n",check_duplicate(stack_a));
-    if (check_duplicate(stack_a) == -1)
+     if (check_duplicate(stack_a) == -1)
         {
             write(1, "Error\n", 6);
             free_stack(stack_a);
-            free(stack_b);
+            free_stack(stack_b);
             return ;
         }
-    int j = 0;
+    
+   /*  int k = 4;
+    while(stack_a && stack_a->arr && k--)
+    {
+        printf(" \n%d th = %d stack_a __original \n", k, stack_a->arr[k]);
+
+    }  */
+    /*int j = 0;
     while(size--)
     {
         //printf("%d th = %d stack_a __original \n", j, stack_a->arr[j]);
@@ -265,7 +314,7 @@ void create_stack_a(int argc,char **argv, _stack *stack_a, _stack *stack_b)
     {
         //printf("\n%d th = %d stack_b \n", k, stack_b->arr[k]);
         k++;
-    } 
+    }  */
 }
 
 int main(int argc, char **argv)
@@ -277,8 +326,8 @@ int main(int argc, char **argv)
     stack_b = NULL;
     if (argc < 2)
         return (1);
-    if (argc == 2)
-        create_stack_a(argc, argv, stack_a, stack_b);
+    //if (argc == 2)
+    create_stack_a(argc, argv, stack_a, stack_b);
    /*  if (argc > 2)
         handle_input(argc, argv); */
     

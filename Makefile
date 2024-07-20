@@ -1,6 +1,6 @@
 NAME = push_swap
 
-SOURCES = push_swap.c sort_me.c
+SOURCES = push_swap.c sort_stack.c
 
 OBJECTS = $(SOURCES:.c=.o)
 

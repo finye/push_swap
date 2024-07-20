@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sort_me.c                                          :+:      :+:    :+:   */
+/*   sort_stack.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fsolomon <fsolomon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -246,11 +246,8 @@ void final_sort_a(_stack *stack_a)
             rev_rotate(stack_a, 'a');
     }
 }
-void sort_me(_stack *stack_a, _stack *stack_b)
+void sort_stack(_stack *stack_a, _stack *stack_b)
 {
-    ///printf("Is sorted? %d \n",is_sorted(stack_a));
-    if (is_sorted(stack_a) == 1)
-        return ;
     if (stack_a->size > 3)
     {
          sort_big(stack_a, stack_b);

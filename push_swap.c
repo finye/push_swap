@@ -6,7 +6,7 @@
 /*   By: fsolomon <fsolomon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 17:03:15 by fsolomon          #+#    #+#             */
-/*   Updated: 2024/07/22 11:44:25 by fsolomon         ###   ########.fr       */
+/*   Updated: 2024/07/22 23:47:25 by fsolomon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -307,6 +307,8 @@ void create_stack_a(char **argv, _stack **stack_a, _stack **stack_b)
             free_stack(stack_b);
             error();
         }
+    if (input)
+        free(input);
 }
 
 int main(int argc, char **argv)

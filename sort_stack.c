@@ -73,7 +73,7 @@ int check_target(int num_in_stack_a, _stack *stack_b)
 
     while(i < stack_b->size)
     {
-        if(stack_b->arr[i] < num_in_stack_a && stack_b->arr[i] > closest_number)
+        if(stack_b->arr[i] < num_in_stack_a && stack_b->arr[i] >= closest_number)
         {
 
             closest_number = stack_b->arr[i];
@@ -136,19 +136,21 @@ int set_cost(int index_b, _stack *stack_b, int index_a, _stack *stack_a)
 {
     int median_a;
     int median_b;
+    int total_cost;
 
     median_a = stack_a->size / 2;
     median_b = stack_b->size / 2;
+    total_cost = 0;
 
     if (index_b <= median_b)
-        stack_a->push_cost += index_b;
+        total_cost += index_b;
     if (index_b > median_b)
-        stack_a->push_cost += stack_b->size - index_b;
+        total_cost += stack_b->size - index_b;
     if (index_a <= median_a)
-        stack_a->push_cost += index_a;
+        total_cost += index_a;
     if (index_a > median_a)
-        stack_a->push_cost += stack_a->size - index_a;
-    return (stack_a->push_cost);
+        total_cost += stack_a->size - index_a;
+    return (total_cost);
 }
 
 void sort_big(_stack *stack_a, _stack *stack_b)
@@ -185,7 +187,7 @@ void sort_big(_stack *stack_a, _stack *stack_b)
         }
         index_a++;
     }
-    printf("\n target_index = %d index_a to push= %d \n",stack_a->target_index, stack_a->cheapest_index);
+    //printf("\n target_index = %d index_a to push= %d \n",stack_a->target_index, stack_a->cheapest_index);
     push_to_target_b(stack_a->target_index, stack_a->cheapest_index, stack_a, stack_b);
 }
 
@@ -210,7 +212,7 @@ int    find_smallest(_stack *stack_a)
     return (min_index);
 }
 
-int find_target_in_a(_stack *stack_a, _stack *stack_b)
+int find_target_in_a(_stack *stack_a, int num_in_stack_b)
 {
     int i;
     int closest_bigger;
@@ -221,7 +223,7 @@ int find_target_in_a(_stack *stack_a, _stack *stack_b)
     target_index = -1;
     while(i < stack_a->size)
     {
-        if (stack_a->arr[i] > stack_b->arr[0] && stack_a->arr[i] < closest_bigger)
+        if (stack_a->arr[i] > num_in_stack_b && stack_a->arr[i] <= closest_bigger)
         {
             closest_bigger = stack_a->arr[i];
             target_index = i;
@@ -235,37 +237,61 @@ int find_target_in_a(_stack *stack_a, _stack *stack_b)
     return(target_index);
 }
 
-void    push_to_a(int index, _stack *stack_a, _stack *stack_b)
+void    push_to_a(int index_a, _stack *stack_a,int index_b, _stack *stack_b)
 {
-    int i;
-    int median;
+    int i_a;
+    int i_b;
+    int median_a;
+    int median_b;
 
-    median = stack_a->size / 2;
-    //i = 0;
-    if (index > median)
+    median_a = stack_a->size / 2;
+    median_b = stack_b->size / 2;
+    i_a = stack_a->size - index_a;
+    i_b = stack_b->size - index_b;
+    if (index_a > median_a)
     {
-        i = stack_a->size - index;
-        while (i--)
+        while (i_a--)
             rev_rotate(stack_a, 'a');
     }
-    else if (index <= median)
+    if (index_a <= median_a)
     {
-        while (index--)
+        while (index_a--)
             rotate (stack_a, 'a');
+    }
+    if (index_b > median_b)
+    {
+        while(i_b--)
+            rev_rotate(stack_b, 'b');
+    }
+    if (index_b <= median_b)
+    {
+        while (index_b--)
+            rotate(stack_b, 'b');
     }
     push_a(stack_a, stack_b);
 }
 
 void push_back_to_a(_stack *stack_a, _stack *stack_b)
 {
-    int index;
+    int index_a;
+    int index_b;
 
-    index = 0;
-    while(stack_b->size)
+    index_a = 0;
+    index_b = 0;
+    stack_b->cheapest = INT_MAX;
+    while(index_b < stack_b->size)
     {
-        index = find_target_in_a(stack_a, stack_b);
-        push_to_a(index, stack_a, stack_b);
+        index_a = find_target_in_a(stack_a, stack_b->arr[index_b]);
+        stack_b->push_cost = set_cost(index_b, stack_b, index_a, stack_a);
+        if (stack_b->push_cost < stack_b->cheapest)
+        {
+            stack_b->cheapest = stack_b->push_cost;
+            stack_b->cheapest_index = index_b;
+            stack_b->target_index = index_a;
+        }
+        index_b++;
     }
+    push_to_a(stack_b->target_index, stack_a, stack_b->cheapest_index, stack_b);
 }
 void final_sort_a(_stack *stack_a)
 {
@@ -293,13 +319,13 @@ void sort_stack(_stack *stack_a, _stack *stack_b)
     {
         sort_big(stack_a, stack_b);
        // min_sort(stack_a);
-        printf("how many times     \n");
     }
     if (stack_a->size <= 3)
     {
-        //printf("do we go here");
         min_sort(stack_a);
     }
-    push_back_to_a(stack_a, stack_b);
-    final_sort_a(stack_a);
+    while (stack_b->size)
+        push_back_to_a(stack_a, stack_b);
+    if (is_sorted (stack_a) == -1)
+        final_sort_a(stack_a);
 }

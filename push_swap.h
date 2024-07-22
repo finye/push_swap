@@ -6,7 +6,7 @@
 /*   By: fsolomon <fsolomon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 17:01:32 by fsolomon          #+#    #+#             */
-/*   Updated: 2024/07/20 15:20:11 by fsolomon         ###   ########.fr       */
+/*   Updated: 2024/07/22 11:44:47 by fsolomon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,17 @@
 # include <stdio.h>
 # include "libft/libft.h"
 # include <stdlib.h>
-# include <limits.h> 
+# include <limits.h>
 
 typedef struct _stack
 {
     int *arr;
     int size;
-    
+    int cheapest_index;
+    int target_index;
+    int push_cost;
+    int median;
+    int cheapest;
 } _stack;
 
 void create_stack_a(char **argv, _stack **stack_a, _stack **stack_b);

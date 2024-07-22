@@ -6,7 +6,7 @@
 /*   By: fsolomon <fsolomon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 17:03:15 by fsolomon          #+#    #+#             */
-/*   Updated: 2024/07/20 15:56:32 by fsolomon         ###   ########.fr       */
+/*   Updated: 2024/07/22 11:44:25 by fsolomon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,10 @@ void is_num(char *str)
     int i;
 
     i = 0;
- 
+
     if (str[0] == '\0')
         error();
-    
+
     while(str[i])
     {
         if(i == 0 && str[i] == '-')
@@ -174,12 +174,12 @@ void rrr(_stack *stack_a, _stack *stack_b)
 }
 
 void free_stack(_stack **stack) {
-    if (stack && *stack) 
+    if (stack && *stack)
     {
-        if ((*stack)->arr) 
+        if ((*stack)->arr)
         {
             free((*stack)->arr);
-            (*stack)->arr = NULL; 
+            (*stack)->arr = NULL;
         }
         free(*stack);
         *stack = NULL;
@@ -198,6 +198,14 @@ void validate_input(int argc, char **argv)
             error();
         i++;
     }
+}
+void init_stack_data(_stack **stack)
+{
+    (*stack)->cheapest_index = 0;
+    (*stack)->target_index = 0;
+    (*stack)->push_cost = 0;
+    (*stack)->cheapest = 0;
+    (*stack)->median = (*stack)->size / 2;
 }
 void parse_input(int argc,char **argv, _stack **stack_a,_stack **stack_b)
 {
@@ -220,6 +228,8 @@ void parse_input(int argc,char **argv, _stack **stack_a,_stack **stack_b)
         return ;
     (*stack_a)->size = argc -1;
     (*stack_b)->size = 0;
+    init_stack_data(stack_a);
+    init_stack_data(stack_b);
     while (i < argc)
     {
          (*stack_a)->arr[j++] = ft_atoi(argv[i++]);
@@ -271,9 +281,11 @@ void create_stack_a(char **argv, _stack **stack_a, _stack **stack_b)
           free_stack(stack_b);
           return ;
     }
-        
+
     (*stack_a)->size = size;
     (*stack_b)->size = 0;
+    init_stack_data(stack_a);
+    init_stack_data(stack_b);
     i = 0;
     while (input[i])
     {
@@ -311,7 +323,7 @@ int main(int argc, char **argv)
     if (argc == 2)
         create_stack_a(argv, &stack_a, &stack_b);
    else if (argc > 2)
-        handle_input(argc, argv, &stack_a, &stack_b); 
+        handle_input(argc, argv, &stack_a, &stack_b);
     if(stack_a && is_sorted(stack_a) == -1)
         sort_stack(stack_a, stack_b);
     free_stack(&stack_a);

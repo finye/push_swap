@@ -6,7 +6,7 @@
 /*   By: fsolomon <fsolomon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 17:03:15 by fsolomon          #+#    #+#             */
-/*   Updated: 2024/07/22 23:47:25 by fsolomon         ###   ########.fr       */
+/*   Updated: 2024/07/23 18:49:19 by fsolomon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,8 +141,8 @@ void rotate(_stack *stack_a, char c)
 //rr : ra and rb at the same time.
 void rr (_stack *stack_a, _stack *stack_b)
 {
-    rotate(stack_a, 'a');
-    rotate(stack_b, 'b');
+    rotate(stack_a, '_');
+    rotate(stack_b, '_');
     write(1, "rr\n", 3);
 }
 
@@ -168,8 +168,8 @@ void rev_rotate(_stack *stack_a, char c)
 //rrr : rra and rrb at the same time.
 void rrr(_stack *stack_a, _stack *stack_b)
 {
-    rev_rotate(stack_a, 'a');
-    rev_rotate(stack_b, 'b');
+    rev_rotate(stack_a, '_');
+    rev_rotate(stack_b, '_');
     write(1, "rrr\n", 4);
 }
 
@@ -270,7 +270,7 @@ void create_stack_a(char **argv, _stack **stack_a, _stack **stack_b)
         *stack_a = malloc(sizeof(_stack));
         *stack_b = malloc(sizeof(_stack));
     }
-
+    
     if (!*stack_a || !*stack_b)
         return ;
     (*stack_a)->arr = malloc(sizeof(int) * size);

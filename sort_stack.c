@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sort_stack.c                                          :+:      :+:    :+:   */
+/*   sort_stack.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fsolomon <fsolomon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 12:53:28 by fsolomon          #+#    #+#             */
-/*   Updated: 2024/07/17 15:58:39 by fsolomon         ###   ########.fr       */
+/*   Updated: 2024/07/23 18:49:15 by fsolomon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,43 @@ int check_target(int num_in_stack_a, _stack *stack_b)
 
     return (target);
 }
+ 
+void push_to_target_b_separ(int index_b, int index_a, _stack *stack_a, _stack *stack_b)
+{
+    int median_b;
+    int i_b;
+    int median_a;
+    int i_a;
 
+    i_b = stack_b->size - index_b;
+    i_a = stack_a->size -index_a;
+    median_b = stack_b->size / 2;
+    median_a = stack_a->size / 2;
+    //printf("when do we come here \n");
+    if (index_b > median_b)
+    {
+        //rev_rotate until our number is on top
+        while(i_b--)
+            rev_rotate(stack_b, 'b');
+    }
+    if(index_b <= median_b)
+    {
+        while (index_b--)
+            rotate(stack_b, 'b');
+    }
+    if (index_a > median_a)
+    {
+        //rev_rotate until our number is on top
+        while(i_a--)
+            rev_rotate(stack_a, 'a');
+    }
+    if (index_a <= median_a)
+    {
+        while (index_a--)
+            rotate(stack_a, 'a');
+    }
+    //push_b(stack_a, stack_b);
+}
 void push_to_target_b(int index_b, int index_a, _stack *stack_a, _stack *stack_b)
 {
     int median_b;
@@ -107,29 +143,46 @@ void push_to_target_b(int index_b, int index_a, _stack *stack_a, _stack *stack_b
     i_a = stack_a->size -index_a;
     median_b = stack_b->size / 2;
     median_a = stack_a->size / 2;
-    if (index_b > median_b)
-    {
-        //rev_rotate until our guy is on top
-        while(i_b--)
+    if (index_b > median_b && index_a > median_a)
+    { 
+        while (i_b > 0 && i_a > 0)
+        {
+            rrr(stack_a, stack_b);
+            i_b--;
+            i_a--;
+        }
+        while (i_b > 0)
+        {
             rev_rotate(stack_b, 'b');
-    }
-    if(index_b <= median_b)
-    {
-        while (index_b--)
-            rotate(stack_b, 'b');
-    }
-    if (index_a > median_a)
-    {
-        //rev_rotate until our guy is on top
-        while(i_a--)
+            i_b--;
+        }
+        while (i_a > 0)
+        {
             rev_rotate(stack_a, 'a');
+            i_a--;
+        }
     }
-    if(index_a <= median_a)
+    else if (index_b <= median_b && index_a <= median_a)
     {
-        while (index_a--)
+         while (index_b > 0 && index_a > 0)
+        {
+            rr(stack_a, stack_b);
+            index_b--;
+            index_a--;
+        }
+        while (index_b > 0)
+        {
+            rotate(stack_b, 'b');
+            index_b--;
+        }
+        while (index_a > 0)
+        {
             rotate(stack_a, 'a');
+            index_a--;
+        }
     }
-
+    else
+        push_to_target_b_separ(index_b, index_a, stack_a, stack_b);
     push_b(stack_a, stack_b);
 }
 int set_cost(int index_b, _stack *stack_b, int index_a, _stack *stack_a)
@@ -163,7 +216,7 @@ void sort_big(_stack *stack_a, _stack *stack_b)
     index_a = 0;
     //cost = 0;
     stack_a->cheapest = INT_MAX;
-    while(stack_a->size > 3 && index_a < stack_a->size)
+    while(stack_a->size > 4 && index_a < stack_a->size)
     {
          //printf("size_STACK_A = %d \n", stack_a->size);
          //printf("size_STACK_B = %d \n", stack_b->size);
@@ -236,7 +289,7 @@ int find_target_in_a(_stack *stack_a, int num_in_stack_b)
         }
     return(target_index);
 }
-
+//TODO : create a set median function to set both medians and save them as a stack info 
 void    push_to_a(int index_a, _stack *stack_a,int index_b, _stack *stack_b)
 {
     int i_a;

@@ -6,7 +6,7 @@
 /*   By: fsolomon <fsolomon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 12:53:28 by fsolomon          #+#    #+#             */
-/*   Updated: 2024/07/23 18:49:15 by fsolomon         ###   ########.fr       */
+/*   Updated: 2024/07/24 19:37:08 by fsolomon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,7 +185,7 @@ void push_to_target_b(int index_b, int index_a, _stack *stack_a, _stack *stack_b
         push_to_target_b_separ(index_b, index_a, stack_a, stack_b);
     push_b(stack_a, stack_b);
 }
-int set_cost(int index_b, _stack *stack_b, int index_a, _stack *stack_a)
+/* int set_cost(int index_b, _stack *stack_b, int index_a, _stack *stack_a)
 {
     int median_a;
     int median_b;
@@ -204,45 +204,101 @@ int set_cost(int index_b, _stack *stack_b, int index_a, _stack *stack_a)
     if (index_a > median_a)
         total_cost += stack_a->size - index_a;
     return (total_cost);
+} */
+int set_cost(int index_b, _stack *stack_b, int index_a, _stack *stack_a)
+{
+    int median_a;
+    int median_b;
+    int total_cost;
+    int min_index;
+    int i_b;
+    int i_a;
+
+    median_a = stack_a->size / 2;
+    median_b = stack_b->size / 2;
+    i_b = stack_b->size - index_b;
+    i_a = stack_a->size - index_a;
+    total_cost = 0;
+
+    if (index_b <= median_b && index_a <= median_a)
+    {
+        // Shared rotations (rr)
+        min_index = index_b;
+        if (index_a < index_b)
+            min_index = index_a;
+
+        total_cost += min_index; 
+
+        if (index_b > index_a)
+            total_cost += (index_b - index_a);
+        else
+            total_cost += (index_a - index_b);
+    }
+    else if (index_b > median_b && index_a > median_a)
+    {
+        // Shared reverse rotations (rrr)
+        min_index = i_b;
+        if (i_a < i_b)
+            min_index = i_a;
+
+        total_cost += min_index; 
+
+        if (i_b > i_a)
+            total_cost += (i_b - i_a);
+        else
+            total_cost += (i_a - i_b);
+    }
+    else
+    {
+        // Separate rotations
+        if (index_b <= median_b)
+            total_cost += index_b;
+        else
+            total_cost += stack_b->size - index_b;
+
+        if (index_a <= median_a)
+            total_cost += index_a;
+        else
+            total_cost += stack_a->size - index_a;
+    }
+
+    return total_cost;
 }
 
 void sort_big(_stack *stack_a, _stack *stack_b)
- {
+{
     int index_b;
     int index_a;
-    //int cost;
-
     index_b = 0;
     index_a = 0;
-    //cost = 0;
     stack_a->cheapest = INT_MAX;
-    while(stack_a->size > 4 && index_a < stack_a->size)
+    while (stack_a->size > 3)
     {
-         //printf("size_STACK_A = %d \n", stack_a->size);
-         //printf("size_STACK_B = %d \n", stack_b->size);
-        //push_b(stack_a, stack_b);
-        if (stack_b->size <= 1)
-            push_b(stack_a,stack_b);
-        else if (stack_b->size > 1)
+        while (index_a < stack_a->size)
         {
-            //check_target(stack_a, stack_b);
-            //printf("%d THE target index \n", check_target(stack_a, stack_b));
-            index_b = check_target(stack_a->arr[index_a], stack_b);
-            stack_a->push_cost = set_cost(index_b, stack_b, index_a, stack_a);
-            if (stack_a->push_cost < stack_a->cheapest)
+            if (stack_b->size <= 1)
             {
-                stack_a->cheapest = stack_a->push_cost;
-                stack_a->cheapest_index = index_a;
-                stack_a->target_index = index_b;
+                push_b(stack_a, stack_b);
+                break;
             }
-
-            //push_to_target_b(index, stack_a, stack_b);
+            else
+            {
+                index_b = check_target(stack_a->arr[index_a], stack_b);
+                stack_a->push_cost = set_cost(index_b, stack_b, index_a, stack_a);
+                if (stack_a->push_cost < stack_a->cheapest)
+                {
+                    stack_a->cheapest = stack_a->push_cost;
+                    stack_a->cheapest_index = index_a;
+                    stack_a->target_index = index_b;
+                }
+            }
+            index_a++;
         }
-        index_a++;
+        if (stack_a->size > 3)
+            push_to_target_b(stack_a->target_index, stack_a->cheapest_index, stack_a, stack_b);
     }
-    //printf("\n target_index = %d index_a to push= %d \n",stack_a->target_index, stack_a->cheapest_index);
-    push_to_target_b(stack_a->target_index, stack_a->cheapest_index, stack_a, stack_b);
 }
+
 
 int    find_smallest(_stack *stack_a)
 {

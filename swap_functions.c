@@ -1,39 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   rev_rotate_stack.c                                 :+:      :+:    :+:   */
+/*   swap_functions.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fsolomon <fsolomon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/25 00:16:04 by fsolomon          #+#    #+#             */
-/*   Updated: 2024/07/25 13:07:53 by fsolomon         ###   ########.fr       */
+/*   Created: 2024/07/25 12:44:45 by fsolomon          #+#    #+#             */
+/*   Updated: 2024/07/25 13:12:39 by fsolomon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-//rra (reverse rotate a): Shift down all elements of stack a by 1.
-//The last element becomes the first one.
-void	rev_rotate(t_stack *stack, char c)
+//Swap the first 2 elements at the top of a stack.
+//Do nothing if there is only one or no elements.
+void	swap(t_stack *stack, char c)
 {
 	int	temp;
 
 	if (!stack || !stack->arr || stack->size <= 1)
 		return ;
-	temp = stack->arr[stack->size -1];
-	ft_memmove(&stack->arr[1], &stack->arr[0], sizeof(int) * \
-		(stack->size -1));
-	stack->arr[0] = temp;
+	temp = stack->arr[0];
+	stack->arr[0] = stack->arr[1];
+	stack->arr[1] = temp;
 	if (c == 'a')
-		write(1, "rra\n", 4);
+		write (1, "sa\n", 3);
 	else if (c == 'b')
-		write(1, "rrb\n", 4);
+		write (1, "sb\n", 3);
 }
 
-//rrr : rra and rrb at the same time.
-void	rrr(t_stack *stack_a, t_stack *stack_b)
+void	ss(t_stack *stack_a, t_stack *stack_b)
 {
-	rev_rotate(stack_a, '_');
-	rev_rotate(stack_b, '_');
-	write(1, "rrr\n", 4);
+	swap(stack_a, 'a');
+	swap(stack_b, 'b');
+	write(1, "ss\n", 3);
 }

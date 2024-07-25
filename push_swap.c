@@ -6,7 +6,7 @@
 /*   By: fsolomon <fsolomon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 17:03:15 by fsolomon          #+#    #+#             */
-/*   Updated: 2024/07/25 00:32:28 by fsolomon         ###   ########.fr       */
+/*   Updated: 2024/07/25 15:41:49 by fsolomon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,159 +14,18 @@
 #include <string.h>
 #include <limits.h>
 
-int	check_duplicate(_stack **stack_a)
-{
-	int	i;
-	int	j;
 
-	i = 0;
-	if (!(*stack_a) || !(*stack_a)->size)
-		return (-1);
-	if ((*stack_a)->size == 1)
-		return (1);
-	while (i < (*stack_a)->size)
-	{
-		j = i + 1;
-		while (j < (*stack_a)->size)
-		{
-			if ((*stack_a)->arr[i] == (*stack_a)->arr[j])
-				return (-1);
-			j++;
-		}
-		i++;
-	}
-	return (1);
-}
-
-void	error(void)
-{
-	ft_putstr_fd("Error\n", 2);
-	exit (1);
-}
-
-int	is_num(char *str)
-{
-	int	i;
-
-	i = 0;
-	if (str[0] == '\0')
-		return (-1);
-	while (str[i])
-	{
-		if (i == 0 && str[i] == '-')
-		{
-			i++;
-		}
-		if (!ft_isdigit(str[i]))
-			return (-1);
-		i++;
-	}
-	return (1);
-}
-
-//Swap the first 2 elements at the top of a stack.
-//Do nothing if there is only one or no elements.
-void	swap(_stack *stack_a, char c)
-{
-	int	temp;
-
-	if (!stack_a || !stack_a->arr || stack_a->size <= 1)
-		return ;
-	temp = stack_a->arr[0];
-	stack_a->arr[0] = stack_a->arr[1];
-	stack_a->arr[1] = temp;
-	if (c == 'a')
-		write (1, "sa\n", 3);
-	else if (c == 'b')
-		write (1, "sb\n", 3);
-}
-
-void	ss(_stack *stack_a, _stack *stack_b)
-{
-	swap(stack_a, 'a');
-	swap(stack_b, 'b');
-	write(1, "ss\n", 3);
-}
-
-//pa (push a): Take the first element at the top of b and put it at the top of a.
-//Do nothing if b is empty.
-void	push_a(_stack *stack_a, _stack *stack_b)
-{
-	int	temp;
-
-	if (!stack_b || !stack_b->arr || !stack_b->size)
-		return ;
-	temp = stack_b->arr[0];
-	if (stack_a->size >= 1)
-		ft_memmove(&stack_a->arr[1], &stack_a->arr[0], \
-			(stack_a->size) * sizeof(int));
-	stack_a->arr[0] = temp;
-	if (stack_b->size >=1)
-		ft_memmove(&stack_b->arr[0], &stack_b->arr[1], \
-			(stack_b->size) * sizeof(int));
-	stack_a->size++;
-	stack_b->size--;
-	write(1, "pa\n", 3);
-}
-
-//pb (push b): Take the first element at the top of a and put it at the top of b.
-//Do nothing if a is empty
-void	push_b(_stack *stack_a, _stack *stack_b)
-{
-	int	temp;
-
-	if (!stack_a || !stack_a->arr || !stack_a->size)
-		return ;
-	temp = stack_a->arr[0];
-	if (stack_b->size >= 1)
-		ft_memmove(&stack_b->arr[1], &stack_b->arr[0], \
-			(stack_b->size) * sizeof(int));
-	stack_b->arr[0] = temp;
-	if (stack_a->size >=1)
-		ft_memmove(&stack_a->arr[0], &stack_a->arr[1], \
-			(stack_a->size) * sizeof(int));
-
-	stack_b->size++;
-	stack_a->size--;
-	write(1, "pb\n", 3);
-}
-
-void	free_stack(_stack **stack) {
-	if (stack && *stack)
-	{
-		if ((*stack)->arr)
-		{
-			free((*stack)->arr);
-			(*stack)->arr = NULL;
-		}
-		free(*stack);
-		*stack = NULL;
-	}
-}
-
-void	validate_input(int argc, char **argv)
-{
-	int	i;
-
-	i = 1;
-	while (i < argc)
-	{
-		if (is_num(argv[i]) == -1)
-			error();
-		if (atol(argv[i]) > INT_MAX || atol(argv[i]) < INT_MIN)
-			error();
-		i++;
-	}
-}
-void	init_stack_data(_stack **stack)
+void	init_stack_data(t_stack **stack, int size)
 {
 	(*stack)->cheapest_index = 0;
 	(*stack)->target_index = 0;
 	(*stack)->push_cost = 0;
 	(*stack)->cheapest = 0;
+	(*stack)->size = size;
 	(*stack)->median = (*stack)->size / 2;
 }
-void	parse_input(int argc,char **argv, _stack **stack_a,_stack **stack_b)
+
+void	parse_input(int argc, char **argv, t_stack **stack_a, t_stack **stack_b)
 {
 	int	i;
 	int	j;
@@ -176,8 +35,8 @@ void	parse_input(int argc,char **argv, _stack **stack_a,_stack **stack_b)
 
 	if (argc > 2)
 	{
-		*stack_a = malloc(sizeof(_stack));
-		*stack_b = malloc(sizeof(_stack));
+		*stack_a = malloc(sizeof(t_stack));
+		*stack_b = malloc(sizeof(t_stack));
 	}
 	if (!*stack_a || !*stack_b)
 		return ;
@@ -185,16 +44,14 @@ void	parse_input(int argc,char **argv, _stack **stack_a,_stack **stack_b)
 	(*stack_b)->arr = malloc(sizeof(int) * (argc - 1));
 	if (!(*stack_a)->arr || !(*stack_b)->arr)
 		return ;
-	(*stack_a)->size = argc -1;
-	(*stack_b)->size = 0;
-	init_stack_data(stack_a);
-	init_stack_data(stack_b);
+	init_stack_data(stack_a, argc -1);
+	init_stack_data(stack_b, 0);
 	while (i < argc)
 		(*stack_a)->arr[j++] = ft_atoi(argv[i++]);
-
 }
 
-void	handle_input(int argc, char **argv, _stack **stack_a, _stack **stack_b)
+void	handle_input(int argc, char **argv,
+			t_stack **stack_a, t_stack **stack_b)
 {
 	validate_input(argc, argv);
 	parse_input(argc, argv, stack_a, stack_b);
@@ -205,22 +62,8 @@ void	handle_input(int argc, char **argv, _stack **stack_a, _stack **stack_b)
 		error();
 	}
 }
-void	free_split(char **input)
-{
-	char	**temp;
 
-	if (input)
-	{
-		temp = input;
-		while (*input)
-		{
-			free(*input);
-			input++;
-		}
-		free(temp);
-	}
-}
-void	create_stack_a(char **argv, _stack **stack_a, _stack **stack_b)
+void	create_stack_a(char **argv, t_stack **stack_a, t_stack **stack_b)
 {
 	char	**input;
 	int		size;
@@ -236,20 +79,19 @@ void	create_stack_a(char **argv, _stack **stack_a, _stack **stack_b)
 		return ;
 	while (input[i])
 	{
-		if (is_num(input[i]) == -1)
+		if (is_valid_num(input[i++]) == -1)
 		{
 			free_split(input);
 			error();
 		}
-		i++;
 		size++;
 	}
 	if (size > 0)
 	{
-		*stack_a = malloc(sizeof(_stack));
-		*stack_b = malloc(sizeof(_stack));
+		*stack_a = malloc(sizeof(t_stack));
+		*stack_b = malloc(sizeof(t_stack));
 	}
-
+	//free input here too ?????
 	if (!*stack_a || !*stack_b)
 		return ;
 	(*stack_a)->arr = malloc(sizeof(int) * size);
@@ -262,14 +104,12 @@ void	create_stack_a(char **argv, _stack **stack_a, _stack **stack_b)
 		return ;
 	}
 
-	(*stack_a)->size = size;
-	(*stack_b)->size = 0;
-	init_stack_data(stack_a);
-	init_stack_data(stack_b);
+	init_stack_data(stack_a, size);
+	init_stack_data(stack_b, 0);
 	i = 0;
 	while (input[i])
 	{
-		if (atol(input[i]) > INT_MAX || atol(input[i]) < INT_MIN )
+		if (atol(input[i]) > INT_MAX || atol(input[i]) < INT_MIN)
 		{
 			free_stack(stack_a);
 			free_stack(stack_b);
@@ -292,8 +132,8 @@ void	create_stack_a(char **argv, _stack **stack_a, _stack **stack_b)
 
 int	main(int argc, char **argv)
 {
-	_stack	*stack_a;
-	_stack	*stack_b;
+	t_stack	*stack_a;
+	t_stack	*stack_b;
 
 	stack_a = NULL;
 	stack_b = NULL;

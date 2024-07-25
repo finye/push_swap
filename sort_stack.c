@@ -6,7 +6,7 @@
 /*   By: fsolomon <fsolomon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 12:53:28 by fsolomon          #+#    #+#             */
-/*   Updated: 2024/07/25 16:03:58 by fsolomon         ###   ########.fr       */
+/*   Updated: 2024/07/25 19:13:44 by fsolomon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	sort_stack(t_stack *stack_a, t_stack *stack_b)
 {
 	while (stack_a->size > 3)
 	{
-		sort_big(stack_a, stack_b);
+		push_to_stack_b(stack_a, stack_b);
 	}
 	if (stack_a->size <= 3)
 	{

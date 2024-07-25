@@ -6,29 +6,28 @@
 /*   By: fsolomon <fsolomon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 12:19:23 by fsolomon          #+#    #+#             */
-/*   Updated: 2024/07/25 17:50:28 by fsolomon         ###   ########.fr       */
+/*   Updated: 2024/07/25 19:44:33 by fsolomon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-
-int	check_target(int num_in_stack_a, t_stack *stack_b)
+int	find_target_in_b(int num_in_stack_a, t_stack *stack_b)
 {
 	int	i;
 	int	target;
-	int	closest_number;
+	int	closest_smaller;
 	int	biggest;
 
 	i = 0;
 	target = -1;
-	closest_number = INT_MIN;
+	closest_smaller = INT_MIN;
 	while (i < stack_b->size)
 	{
-		if (stack_b->arr[i] < num_in_stack_a \
-			&& stack_b->arr[i] >= closest_number)
+		if (stack_b->arr[i] < num_in_stack_a
+			&& stack_b->arr[i] >= closest_smaller)
 		{
-			closest_number = stack_b->arr[i];
+			closest_smaller = stack_b->arr[i];
 			target = i;
 		}
 		i++;
@@ -47,92 +46,96 @@ void	separate_pushes(int ix_a, int ix_b, t_stack *stack_a, t_stack *stack_b)
 	rotate_stack_a(ix_a, stack_a);
 	rotate_stack_b(ix_b, stack_b);
 }
-
-void	push_to_target_b(int index_b, int index_a, t_stack *stack_a, t_stack *stack_b)
+void	rrr_actions(int rrr_steps_a, int rrr_steps_b, t_stack *stack_a, t_stack *stack_b)
 {
-	int	median_b;
-	int	i_b;
-	int	median_a;
-	int	i_a;
+	while (rrr_steps_a > 0 && rrr_steps_b > 0)
+	{
+		rrr(stack_a, stack_b);
+		rrr_steps_a--;
+		rrr_steps_b--;
+	}
+	while (rrr_steps_a > 0)
+	{
+		rev_rotate(stack_a, 'a');
+		rrr_steps_a--;
+	}
+	while (rrr_steps_b > 0)
+	{
+		rev_rotate(stack_b, 'b');
+		rrr_steps_b--;
+	}
+}
 
-	i_b = stack_b->size - index_b;
-	i_a = stack_a->size - index_a;
-	median_b = stack_b->size / 2;
-	median_a = stack_a->size / 2;
-	if (index_b > median_b && index_a > median_a)
+void	rr_actions(int ix_a, int ix_b, t_stack *stack_a, t_stack *stack_b)
+{
+	while (ix_a > 0 && ix_b > 0)
 	{
-		while (i_b > 0 && i_a > 0)
-		{
-			rrr(stack_a, stack_b);
-			i_b--;
-			i_a--;
-		}
-		while (i_b > 0)
-		{
-			rev_rotate(stack_b, 'b');
-			i_b--;
-		}
-		while (i_a > 0)
-		{
-			rev_rotate(stack_a, 'a');
-			i_a--;
-		}
+		rr(stack_a, stack_b);
+		ix_a--;
+		ix_b--;
 	}
-	else if (index_b <= median_b && index_a <= median_a)
+	while (ix_a > 0)
 	{
-		while (index_b > 0 && index_a > 0)
-		{
-			rr(stack_a, stack_b);
-			index_b--;
-			index_a--;
-		}
-		while (index_b > 0)
-		{
-			rotate(stack_b, 'b');
-			index_b--;
-		}
-		while (index_a > 0)
-		{
-			rotate(stack_a, 'a');
-			index_a--;
-		}
+		rotate(stack_a, 'a');
+		ix_a--;
 	}
+	while (ix_b > 0)
+	{
+		rotate(stack_b, 'b');
+		ix_b--;
+	}
+}
+
+void	prep_to_push(int index_b, int index_a, t_stack *stack_a, t_stack *stack_b)
+{
+	int	rrr_steps_a;
+	int	rrr_steps_b;
+
+	rrr_steps_a = stack_a->size - index_a;
+	rrr_steps_b = stack_b->size - index_b;
+
+	set_median(stack_a, stack_b);
+	if (index_b > stack_b->median && index_a > stack_a->median)
+		rrr_actions(rrr_steps_a, rrr_steps_b, stack_a, stack_b);
+	else if (index_b <= stack_b->median && index_a <= stack_a->median)
+		rr_actions(index_a, index_b, stack_a, stack_b);
 	else
 		separate_pushes(index_a, index_b, stack_a, stack_b);
 	push_into_b(stack_a, stack_b);
 }
 
-void	sort_big(t_stack *stack_a, t_stack *stack_b)
+void	find_cheapest_push(t_stack *stack_a, t_stack *stack_b)
 {
-	int	index_b;
 	int	index_a;
+	int	index_b;
 
+	index_a = 0;
+	while (index_a < stack_a->size)
+	{
+		if (stack_b->size <= 1)
+		{
+			push_into_b(stack_a, stack_b);
+			return ;
+		}
+		index_b = find_target_in_b(stack_a->arr[index_a], stack_b);
+		stack_a->push_cost = set_cost(index_b, stack_b, index_a, stack_a);
+		if (stack_a->push_cost < stack_a->cheapest)
+		{
+			stack_a->cheapest = stack_a->push_cost;
+			stack_a->cheapest_index = index_a;
+			stack_a->target_index = index_b;
+		}
+		index_a++;
+	}
+}
+
+void	push_to_stack_b(t_stack *stack_a, t_stack *stack_b)
+{
 	while (stack_a->size > 3)
 	{
-		index_b = 0;
-		index_a = 0;
 		stack_a->cheapest = INT_MAX;
-		while (index_a < stack_a->size)
-		{
-			if (stack_b->size <= 1)
-			{
-				push_into_b(stack_a, stack_b);
-				break ;
-			}
-			else
-			{
-				index_b = check_target(stack_a->arr[index_a], stack_b);
-				stack_a->push_cost = set_cost(index_b, stack_b, index_a, stack_a);
-				if (stack_a->push_cost < stack_a->cheapest)
-				{
-					stack_a->cheapest = stack_a->push_cost;
-					stack_a->cheapest_index = index_a;
-					stack_a->target_index = index_b;
-				}
-			}
-			index_a++;
-		}
+		find_cheapest_push(stack_a, stack_b);
 		if (stack_a->size > 3)
-			push_to_target_b(stack_a->target_index, stack_a->cheapest_index, stack_a, stack_b);
+			prep_to_push(stack_a->target_index, stack_a->cheapest_index, stack_a, stack_b);
 	}
 }

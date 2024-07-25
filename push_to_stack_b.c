@@ -6,7 +6,7 @@
 /*   By: fsolomon <fsolomon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 12:19:23 by fsolomon          #+#    #+#             */
-/*   Updated: 2024/07/25 19:44:33 by fsolomon         ###   ########.fr       */
+/*   Updated: 2024/07/25 20:14:44 by fsolomon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,53 +40,7 @@ int	find_target_in_b(int num_in_stack_a, t_stack *stack_b)
 	return (target);
 }
 
-void	separate_pushes(int ix_a, int ix_b, t_stack *stack_a, t_stack *stack_b)
-{
-	set_median(stack_a, stack_b);
-	rotate_stack_a(ix_a, stack_a);
-	rotate_stack_b(ix_b, stack_b);
-}
-void	rrr_actions(int rrr_steps_a, int rrr_steps_b, t_stack *stack_a, t_stack *stack_b)
-{
-	while (rrr_steps_a > 0 && rrr_steps_b > 0)
-	{
-		rrr(stack_a, stack_b);
-		rrr_steps_a--;
-		rrr_steps_b--;
-	}
-	while (rrr_steps_a > 0)
-	{
-		rev_rotate(stack_a, 'a');
-		rrr_steps_a--;
-	}
-	while (rrr_steps_b > 0)
-	{
-		rev_rotate(stack_b, 'b');
-		rrr_steps_b--;
-	}
-}
-
-void	rr_actions(int ix_a, int ix_b, t_stack *stack_a, t_stack *stack_b)
-{
-	while (ix_a > 0 && ix_b > 0)
-	{
-		rr(stack_a, stack_b);
-		ix_a--;
-		ix_b--;
-	}
-	while (ix_a > 0)
-	{
-		rotate(stack_a, 'a');
-		ix_a--;
-	}
-	while (ix_b > 0)
-	{
-		rotate(stack_b, 'b');
-		ix_b--;
-	}
-}
-
-void	prep_to_push(int index_b, int index_a, t_stack *stack_a, t_stack *stack_b)
+void	prep_to_push(int index_b, int index_a,t_stack *stack_a, t_stack *stack_b)
 {
 	int	rrr_steps_a;
 	int	rrr_steps_b;
@@ -100,7 +54,7 @@ void	prep_to_push(int index_b, int index_a, t_stack *stack_a, t_stack *stack_b)
 	else if (index_b <= stack_b->median && index_a <= stack_a->median)
 		rr_actions(index_a, index_b, stack_a, stack_b);
 	else
-		separate_pushes(index_a, index_b, stack_a, stack_b);
+		separate_rots(index_a, index_b, stack_a, stack_b);
 	push_into_b(stack_a, stack_b);
 }
 

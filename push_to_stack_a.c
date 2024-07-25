@@ -6,7 +6,7 @@
 /*   By: fsolomon <fsolomon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 12:30:08 by fsolomon          #+#    #+#             */
-/*   Updated: 2024/07/25 17:49:15 by fsolomon         ###   ########.fr       */
+/*   Updated: 2024/07/25 20:16:18 by fsolomon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,45 +36,21 @@ int	find_target_in_a(t_stack *stack_a, int num_in_stack_b)
 	return (target_index);
 }
 
-void	rotate_stack_a(int index_a, t_stack *stack_a)
+void	prepare_to_push(int ix_a, int ix_b, t_stack *stack_a, t_stack *stack_b)
 {
-	int	rev_rotate_step;
+	int	rrr_steps_a;
+	int	rrr_steps_b;
 
-	rev_rotate_step = stack_a->size - index_a;
-	if (index_a > stack_a->median)
-	{
-		while (rev_rotate_step--)
-			rev_rotate(stack_a, 'a');
-	}
-	else
-	{
-		while (index_a--)
-			rotate(stack_a, 'a');
-	}
-}
+	rrr_steps_a = stack_a->size - ix_a;
+	rrr_steps_b = stack_b->size - ix_b;
 
-void	rotate_stack_b(int index_b, t_stack *stack_b)
-{
-	int	rev_rotate_step;
-
-	rev_rotate_step = stack_b->size - index_b;
-	if (index_b > stack_b->median)
-	{
-		while (rev_rotate_step--)
-			rev_rotate(stack_b, 'b');
-	}
-	else
-	{
-		while (index_b--)
-			rotate(stack_b, 'b');
-	}
-}
-
-void	prepare_to_push(int ix_a, t_stack *stack_a, int ix_b, t_stack *stack_b)
-{
 	set_median(stack_a, stack_b);
-	rotate_stack_a(ix_a, stack_a);
-	rotate_stack_b(ix_b, stack_b);
+	if (ix_b > stack_b->median && ix_a > stack_a->median)
+		rrr_actions(rrr_steps_a, rrr_steps_b, stack_a, stack_b);
+	else if (ix_b <= stack_b->median && ix_a <= stack_a->median)
+		rr_actions(ix_a, ix_b, stack_a, stack_b);
+	else
+		separate_rots(ix_a, ix_b, stack_a, stack_b);
 	push_into_a(stack_a, stack_b);
 }
 
@@ -98,6 +74,6 @@ void	push_back_to_a(t_stack *stack_a, t_stack *stack_b)
 		}
 		index_b++;
 	}
-	prepare_to_push(stack_b->target_index, stack_a,
-		stack_b->cheapest_index, stack_b);
+	prepare_to_push(stack_b->target_index,
+		stack_b->cheapest_index, stack_a, stack_b);
 }

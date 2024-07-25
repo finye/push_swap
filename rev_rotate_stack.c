@@ -6,7 +6,7 @@
 /*   By: fsolomon <fsolomon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 00:16:04 by fsolomon          #+#    #+#             */
-/*   Updated: 2024/07/25 13:07:53 by fsolomon         ###   ########.fr       */
+/*   Updated: 2024/07/25 20:17:29 by fsolomon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,7 @@ void	rev_rotate(t_stack *stack, char c)
 	if (!stack || !stack->arr || stack->size <= 1)
 		return ;
 	temp = stack->arr[stack->size -1];
-	ft_memmove(&stack->arr[1], &stack->arr[0], sizeof(int) * \
-		(stack->size -1));
+	ft_memmove(&stack->arr[1], &stack->arr[0], sizeof(int) * (stack->size -1));
 	stack->arr[0] = temp;
 	if (c == 'a')
 		write(1, "rra\n", 4);

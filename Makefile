@@ -2,7 +2,7 @@ NAME = push_swap
 
 SOURCES = push_swap.c sort_stack.c rotate_stack.c rev_rotate_stack.c \
 		free_functions.c push_to_stack_b.c push_to_stack_a.c swap_functions.c \
-		push_functions.c sort_utils.c validate_input.c
+		push_functions.c sort_utils.c validate_input.c stack_prep.c
 
 OBJECTS = $(SOURCES:.c=.o)
 

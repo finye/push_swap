@@ -6,7 +6,7 @@
 /*   By: fsolomon <fsolomon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 17:01:32 by fsolomon          #+#    #+#             */
-/*   Updated: 2024/07/25 17:34:53 by fsolomon         ###   ########.fr       */
+/*   Updated: 2024/07/25 20:04:45 by fsolomon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	rev_rotate(t_stack *stack_a, char c);
 void	rrr(t_stack *stack_a, t_stack *stack_b);
 void	sort_stack(t_stack *stack_a, t_stack *stack_b);
 void	min_sort(t_stack *stack_a);
-void	sort_big(t_stack *stack_a, t_stack *stack_b);
+void	push_to_stack_b(t_stack *stack_a, t_stack *stack_b);
 void	free_stack(t_stack **stack);
 void	free_split(char **input);
 void	set_median(t_stack *stack_a, t_stack *stack_b);
@@ -59,5 +59,9 @@ int		set_cost(int index_b, t_stack *stack_b, int index_a, t_stack *stack_a);
 void	push_back_to_a(t_stack *stack_a, t_stack *stack_b);
 void	rotate_stack_a(int index_a, t_stack *stack_a);
 void	rotate_stack_b(int index_b, t_stack *stack_b);
+void	rr_actions(int ix_a, int ix_b, t_stack *stack_a, t_stack *stack_b);
+void	rrr_actions(int rrr_steps_a, int rrr_steps_b, t_stack *stack_a, t_stack *stack_b);
+void	separate_rots(int ix_a, int ix_b, t_stack *stack_a, t_stack *stack_b);
+
 
 #endif

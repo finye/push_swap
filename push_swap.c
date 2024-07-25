@@ -6,7 +6,7 @@
 /*   By: fsolomon <fsolomon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 17:03:15 by fsolomon          #+#    #+#             */
-/*   Updated: 2024/07/25 15:41:49 by fsolomon         ###   ########.fr       */
+/*   Updated: 2024/07/25 21:04:03 by fsolomon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void	create_stack_a(char **argv, t_stack **stack_a, t_stack **stack_b)
 		*stack_a = malloc(sizeof(t_stack));
 		*stack_b = malloc(sizeof(t_stack));
 	}
-	//free input here too ?????
+	//free input here too! TODO
 	if (!*stack_a || !*stack_b)
 		return ;
 	(*stack_a)->arr = malloc(sizeof(int) * size);
@@ -143,7 +143,7 @@ int	main(int argc, char **argv)
 		error();
 	if (argc == 2)
 		create_stack_a(argv, &stack_a, &stack_b);
-	if (argc > 2)
+	else if (argc > 2)
 		handle_input(argc, argv, &stack_a, &stack_b);
 	if (stack_a && is_sorted(stack_a) == -1)
 		sort_stack(stack_a, stack_b);
@@ -151,3 +151,4 @@ int	main(int argc, char **argv)
 	free_stack(&stack_b);
 	return (0);
 }
+

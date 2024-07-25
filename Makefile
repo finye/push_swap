@@ -1,6 +1,6 @@
 NAME = push_swap
 
-SOURCES = push_swap.c sort_stack.c
+SOURCES = push_swap.c sort_stack.c rotate_stack.c rev_rotate_stack.c
 
 OBJECTS = $(SOURCES:.c=.o)
 

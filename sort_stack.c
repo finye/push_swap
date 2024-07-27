@@ -6,13 +6,13 @@
 /*   By: fsolomon <fsolomon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 12:53:28 by fsolomon          #+#    #+#             */
-/*   Updated: 2024/07/25 19:13:44 by fsolomon         ###   ########.fr       */
+/*   Updated: 2024/07/27 22:49:21 by fsolomon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	min_sort(t_stack *stack_a)
+void	sort_three(t_stack *stack_a)
 {
 	if (stack_a->arr[0] > stack_a->arr[1])
 		swap(stack_a, 'a');
@@ -28,7 +28,6 @@ void	final_sort_a(t_stack *stack_a, t_stack *stack_b)
 	int	rev_rotate_step;
 
 	min_index = find_smallest(stack_a);
-
 	set_median(stack_a, stack_b);
 	if (min_index <= stack_a->median)
 	{
@@ -51,7 +50,7 @@ void	sort_stack(t_stack *stack_a, t_stack *stack_b)
 	}
 	if (stack_a->size <= 3)
 	{
-		min_sort(stack_a);
+		sort_three(stack_a);
 	}
 	while (stack_b->size)
 		push_back_to_a(stack_a, stack_b);

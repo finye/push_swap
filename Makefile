@@ -1,8 +1,9 @@
 NAME = push_swap
 
-SOURCES = push_swap.c sort_stack.c rotate_stack.c rev_rotate_stack.c \
+SOURCES = main.c sort_stack.c rotate_stack.c rev_rotate_stack.c \
 		free_functions.c push_to_stack_b.c push_to_stack_a.c swap_functions.c \
-		push_functions.c sort_utils.c validate_input.c stack_prep.c
+		push_functions.c sort_utils.c validation_utils.c stack_prep.c \
+		calculate_push_cost.c handle_args_input.c handle_string_input.c
 
 OBJECTS = $(SOURCES:.c=.o)
 
@@ -16,7 +17,7 @@ all: $(NAME)
 		$(CC) -c $(CFLAGS) $?
 
 $(NAME): $(OBJECTS) $(LIBFT)
-		$(CC) -g $(OBJECTS) $(LIBFT) -o $(NAME)
+		$(CC) $(OBJECTS) $(LIBFT) -o $(NAME)
 
 $(LIBFT):
 		make -C libft

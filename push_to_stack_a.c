@@ -6,7 +6,7 @@
 /*   By: fsolomon <fsolomon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 12:30:08 by fsolomon          #+#    #+#             */
-/*   Updated: 2024/07/25 20:16:18 by fsolomon         ###   ########.fr       */
+/*   Updated: 2024/07/27 22:48:13 by fsolomon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ void	prepare_to_push(int ix_a, int ix_b, t_stack *stack_a, t_stack *stack_b)
 
 	rrr_steps_a = stack_a->size - ix_a;
 	rrr_steps_b = stack_b->size - ix_b;
-
 	set_median(stack_a, stack_b);
 	if (ix_b > stack_b->median && ix_a > stack_a->median)
 		rrr_actions(rrr_steps_a, rrr_steps_b, stack_a, stack_b);

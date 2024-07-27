@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   validate_input.c                                   :+:      :+:    :+:   */
+/*   validation_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fsolomon <fsolomon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 12:53:21 by fsolomon          #+#    #+#             */
-/*   Updated: 2024/07/25 13:12:16 by fsolomon         ###   ########.fr       */
+/*   Updated: 2024/07/27 10:15:03 by fsolomon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,23 +56,16 @@ int	is_valid_num(char *str)
 	return (1);
 }
 
-void	validate_input(int argc, char **argv)
-{
-	int	i;
-
-	i = 1;
-	while (i < argc)
-	{
-		if (is_valid_num(argv[i]) == -1)
-			error();
-		if (atol(argv[i]) > INT_MAX || atol(argv[i]) < INT_MIN)
-			error();
-		i++;
-	}
-}
-
 void	error(void)
 {
 	ft_putstr_fd("Error\n", 2);
 	exit (1);
+}
+
+void	handle_err_and_free(char **input, t_stack **stack_a, t_stack **stack_b)
+{
+	free_stack(stack_a);
+	free_stack(stack_b);
+	free_split(input);
+	error();
 }

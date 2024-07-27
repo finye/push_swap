@@ -6,7 +6,7 @@
 /*   By: fsolomon <fsolomon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 12:19:23 by fsolomon          #+#    #+#             */
-/*   Updated: 2024/07/25 20:14:44 by fsolomon         ###   ########.fr       */
+/*   Updated: 2024/07/27 22:48:27 by fsolomon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,14 @@ int	find_target_in_b(int num_in_stack_a, t_stack *stack_b)
 	return (target);
 }
 
-void	prep_to_push(int index_b, int index_a,t_stack *stack_a, t_stack *stack_b)
+void	prep_to_push(int index_b, int index_a, t_stack *stack_a,
+			t_stack *stack_b)
 {
 	int	rrr_steps_a;
 	int	rrr_steps_b;
 
 	rrr_steps_a = stack_a->size - index_a;
 	rrr_steps_b = stack_b->size - index_b;
-
 	set_median(stack_a, stack_b);
 	if (index_b > stack_b->median && index_a > stack_a->median)
 		rrr_actions(rrr_steps_a, rrr_steps_b, stack_a, stack_b);
@@ -90,6 +90,9 @@ void	push_to_stack_b(t_stack *stack_a, t_stack *stack_b)
 		stack_a->cheapest = INT_MAX;
 		find_cheapest_push(stack_a, stack_b);
 		if (stack_a->size > 3)
-			prep_to_push(stack_a->target_index, stack_a->cheapest_index, stack_a, stack_b);
+		{
+			prep_to_push(stack_a->target_index, stack_a->cheapest_index,
+				stack_a, stack_b);
+		}
 	}
 }

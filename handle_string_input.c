@@ -6,7 +6,7 @@
 /*   By: fsolomon <fsolomon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 10:10:17 by fsolomon          #+#    #+#             */
-/*   Updated: 2024/07/27 22:37:21 by fsolomon         ###   ########.fr       */
+/*   Updated: 2024/07/28 23:08:49 by fsolomon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,59 +22,62 @@ void	init_stack_data(t_stack **stack, int size)
 	(*stack)->median = (*stack)->size / 2;
 }
 
-void	allocate_stacks(char **input, t_stack **stack_a,
+void	allocate_stacks(char **split_str, t_stack **stack_a,
 			t_stack **stack_b, int size)
 {
 	*stack_a = malloc(sizeof(t_stack));
 	*stack_b = malloc(sizeof(t_stack));
 	if (!*stack_a || !*stack_b)
-		handle_err_and_free(input, stack_a, stack_b);
+		handle_err_and_free(split_str, stack_a, stack_b);
 	(*stack_a)->arr = malloc(sizeof(int) * size);
 	(*stack_b)->arr = malloc(sizeof(int) * size);
 	if (!(*stack_a)->arr || !(*stack_b)->arr)
-		handle_err_and_free(input, stack_a, stack_b);
+		handle_err_and_free(split_str, stack_a, stack_b);
 	init_stack_data(stack_a, size);
 	init_stack_data(stack_b, 0);
 }
 
-void	validate_and_fill_stack_a(char **input, t_stack **stack_a,
+void	validate_and_fill_stack_a(char **split_str, t_stack **stack_a,
 			t_stack **stack_b)
 {
 	int	i;
 
 	i = 0;
-	while (input[i])
+	while (split_str[i])
 	{
-		if (ft_atol(input[i]) > INT_MAX || ft_atol(input[i]) < INT_MIN)
-			handle_err_and_free(input, stack_a, stack_b);
-		(*stack_a)->arr[i] = ft_atoi(input[i]);
+		if (ft_atol(split_str[i]) > INT_MAX || ft_atol(split_str[i]) < INT_MIN)
+			handle_err_and_free(split_str, stack_a, stack_b);
+		(*stack_a)->arr[i] = ft_atoi(split_str[i]);
 		i++;
 	}
 	if (check_duplicate(stack_a) == -1)
-		handle_err_and_free(input, stack_a, stack_b);
+		handle_err_and_free(split_str, stack_a, stack_b);
 }
 
 void	handle_string_input(char **argv, t_stack **stack_a, t_stack **stack_b)
 {
-	char	**input;
-	int		size;
+	char	**split_str;
+	int		count;
 	int		i;
 
-	size = 0;
+	count = 0;
 	i = 0;
-	if (!argv[1] || argv[1][0] == '\0')
+	if (argv[1][0] == '\0')
 		return ;
-	input = ft_split(argv[1], ' ');
-	if (!input)
-		return ;
-	while (input[i])
+	split_str = ft_split(argv[1], ' ');
+	if (!split_str || !split_str[0])
 	{
-		if (is_valid_num(input[i++]) == -1)
-			handle_err_and_free(input, NULL, NULL);
-		size++;
+		free_split(split_str);
+		return ;
 	}
-	if (size > 0)
-		allocate_stacks(input, stack_a, stack_b, size);
-	validate_and_fill_stack_a(input, stack_a, stack_b);
-	free_split(input);
+	while (split_str[i])
+	{
+		if (is_valid_num(split_str[i++]) == -1)
+			handle_err_and_free(split_str, NULL, NULL);
+		count++;
+	}
+	if (count > 0)
+		allocate_stacks(split_str, stack_a, stack_b, count);
+	validate_and_fill_stack_a(split_str, stack_a, stack_b);
+	free_split(split_str);
 }

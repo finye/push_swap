@@ -6,7 +6,7 @@
 /*   By: fsolomon <fsolomon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 10:00:38 by fsolomon          #+#    #+#             */
-/*   Updated: 2024/07/27 22:36:35 by fsolomon         ###   ########.fr       */
+/*   Updated: 2024/07/28 23:12:36 by fsolomon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,11 @@ void	parse_args_input(int argc, char **argv,
 		*stack_b = malloc(sizeof(t_stack));
 	}
 	if (!*stack_a || !*stack_b)
-		return ;
+		handle_err_and_free(NULL, stack_a, stack_b);
 	(*stack_a)->arr = malloc(sizeof(int) * (argc - 1));
 	(*stack_b)->arr = malloc(sizeof(int) * (argc - 1));
 	if (!(*stack_a)->arr || !(*stack_b)->arr)
-		return ;
+		handle_err_and_free(NULL, stack_a, stack_b);
 	init_stack_data(stack_a, argc -1);
 	init_stack_data(stack_b, 0);
 	while (i < argc)
@@ -58,9 +58,5 @@ void	handle_args_input(int argc, char **argv,
 	validate_args_input(argc, argv);
 	parse_args_input(argc, argv, stack_a, stack_b);
 	if (check_duplicate(stack_a) == -1)
-	{
-		free_stack(stack_a);
-		free_stack(stack_b);
-		error();
-	}
+		handle_err_and_free(NULL, stack_a, stack_b);
 }

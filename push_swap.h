@@ -6,7 +6,7 @@
 /*   By: fsolomon <fsolomon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 17:01:32 by fsolomon          #+#    #+#             */
-/*   Updated: 2024/07/27 22:46:15 by fsolomon         ###   ########.fr       */
+/*   Updated: 2024/07/28 21:59:10 by fsolomon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,10 @@ void	validate_args_input(int argc, char **argv);
 int		check_duplicate(t_stack **stack_a);
 int		is_valid_num(char *str);
 void	error(void);
-void	handle_err_and_free(char **input, t_stack **stack_a, t_stack **stack_b);
+void	handle_err_and_free(char **split_str, t_stack **stack_a,
+			t_stack **stack_b);
 void	free_stack(t_stack **stack);
-void	free_split(char **input);
+void	free_split(char **split_str);
 int		is_sorted(t_stack *stack);
 void	push_into_a(t_stack *stack_a, t_stack *stack_b);
 void	push_into_b(t_stack *stack_a, t_stack *stack_b);

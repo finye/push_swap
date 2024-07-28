@@ -6,7 +6,7 @@
 /*   By: fsolomon <fsolomon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 12:43:25 by fsolomon          #+#    #+#             */
-/*   Updated: 2024/07/25 16:22:12 by fsolomon         ###   ########.fr       */
+/*   Updated: 2024/07/28 23:51:45 by fsolomon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	push_into_b(t_stack *stack_a, t_stack *stack_b)
 		ft_memmove(&stack_b->arr[1], &stack_b->arr[0],
 			(stack_b->size) * sizeof(int));
 	stack_b->arr[0] = temp;
-	if (stack_a->size >=1)
+	if (stack_a->size >= 1)
 		ft_memmove(&stack_a->arr[0], &stack_a->arr[1],
 			(stack_a->size) * sizeof(int));
 

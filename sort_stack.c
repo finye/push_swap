@@ -6,7 +6,7 @@
 /*   By: fsolomon <fsolomon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 12:53:28 by fsolomon          #+#    #+#             */
-/*   Updated: 2024/07/27 22:49:21 by fsolomon         ###   ########.fr       */
+/*   Updated: 2024/07/28 23:57:48 by fsolomon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ void	sort_three(t_stack *stack_a)
 {
 	if (stack_a->arr[0] > stack_a->arr[1])
 		swap(stack_a, 'a');
-	if ((is_sorted(stack_a) == -1) && stack_a->arr[1] > stack_a->arr[2])
+	if (stack_a->arr[1] > stack_a->arr[2])
 		rev_rotate(stack_a, 'a');
-	if ((is_sorted(stack_a) == -1) && stack_a->arr[0] > stack_a->arr[1])
+	if (stack_a->arr[0] > stack_a->arr[1])
 		swap(stack_a, 'a');
 }
 

@@ -6,7 +6,7 @@
 /*   By: fsolomon <fsolomon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 12:53:21 by fsolomon          #+#    #+#             */
-/*   Updated: 2024/07/27 10:15:03 by fsolomon         ###   ########.fr       */
+/*   Updated: 2024/07/28 22:52:35 by fsolomon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,7 @@ int	is_valid_num(char *str)
 	while (str[i])
 	{
 		if (i == 0 && str[i] == '-')
-		{
 			i++;
-		}
 		if (!ft_isdigit(str[i]))
 			return (-1);
 		i++;
@@ -62,10 +60,11 @@ void	error(void)
 	exit (1);
 }
 
-void	handle_err_and_free(char **input, t_stack **stack_a, t_stack **stack_b)
+void	handle_err_and_free(char **split_str, t_stack **stack_a,
+			t_stack **stack_b)
 {
 	free_stack(stack_a);
 	free_stack(stack_b);
-	free_split(input);
+	free_split(split_str);
 	error();
 }

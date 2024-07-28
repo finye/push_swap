@@ -6,7 +6,7 @@
 /*   By: fsolomon <fsolomon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 12:04:34 by fsolomon          #+#    #+#             */
-/*   Updated: 2024/07/27 10:14:29 by fsolomon         ###   ########.fr       */
+/*   Updated: 2024/07/28 21:52:12 by fsolomon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,17 +26,17 @@ void	free_stack(t_stack **stack)
 	}
 }
 
-void	free_split(char **input)
+void	free_split(char **split_str)
 {
 	char	**temp;
 
-	if (input)
+	if (split_str)
 	{
-		temp = input;
-		while (*input)
+		temp = split_str;
+		while (*split_str)
 		{
-			free(*input);
-			input++;
+			free(*split_str);
+			split_str++;
 		}
 		free(temp);
 	}

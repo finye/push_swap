@@ -6,15 +6,15 @@
 /*   By: fsolomon <fsolomon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 17:01:32 by fsolomon          #+#    #+#             */
-/*   Updated: 2024/07/28 21:59:10 by fsolomon         ###   ########.fr       */
+/*   Updated: 2024/07/29 10:46:16 by fsolomon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PUSH_SWAP_H
 # define PUSH_SWAP_H
 
-# include <unistd.h>
 # include "libft/libft.h"
+# include <unistd.h>
 # include <stdlib.h>
 # include <limits.h>
 
